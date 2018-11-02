@@ -23,12 +23,26 @@ if( ! empty($data)){
 
   setcookie("message","delete",time()-1); // Kita delete cookie message
 
-  header("location: ./hotspusat/view_hotspusat.php");
+  switch ($data['role']) {
+    case "pusat":
+        header("location: ./hotspusat/view_hotspusat.php");
+        break;
+    case "fasil":
+        header("location: ./hotsfasil/index.php");
+        break;
+    case "admin":
+        header("location: ./hotsadmin/index.php");
+        break;
+    case "reviewer":
+        header("location: ./hotsreviewer/index.php");
+        break;
+  }
   
 }else{
   // Buat sebuah cookie untuk menampung data pesan kesalahan
   setcookie("message", "Maaf, Username atau Password salah", time()+3600);
 
   header("location: index.php");
+
 }
 ?>

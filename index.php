@@ -11,6 +11,13 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  footer {
+    background-color: #555;
+    color: white;
+    padding: 10px;
+  }
+  </style>
 </head>
 <body>
 
@@ -72,11 +79,7 @@
   </div>
         
   <footer class="container-fluid text-center">
-    <p>
-      follow us
-      <i class="fab fa-facebook"></i>
-      <i class="fab fa-instagram"></i>
-    </p>
+    <p>Footer Text</p>
   </footer>
 
 </div>
