@@ -17,7 +17,7 @@
     color: white;
     padding: 10px;
   }
-  </style>
+  </style> 
 </head>
 <body>
 
