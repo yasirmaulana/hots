@@ -9,7 +9,7 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
   <title>Pusat</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="http://hots.kauny.com/images/hots.ico"/>
+  <link rel="shortcut icon" href="https://kauny.com/hots/images/hots.ico"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -48,18 +48,17 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
 
 <div class="container" style="margin-top:50px">
   <h2>Assalamu'alaikum <?php echo $_SESSION['nama']; ?>,</h2>
-  <p>ini adalah role pusat. berikut adalah halaman untuk pengaturan fasil, grup dan surah</p>
+  <p>ini adalah role pusat. berikut adalah halaman untuk pengaturan fasil dan grup</p>
 
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+    <li class="active"><a data-toggle="tab" href="#home">Dashboard</a></li>
     <li><a data-toggle="tab" href="#menu1">Fasil</a></li>
     <li><a data-toggle="tab" href="#menu2">Grup</a></li>
-    <!-- <li><a data-toggle="tab" href="#menu3">Surah</a></li> -->
   </ul>
 
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-      <h3>HOME</h3>
+      <h3>Dashboard</h3>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
     </div>
 
@@ -67,7 +66,8 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
     <div id="menu1" class="tab-pane fade">
       <h2>Fasil</h2>
       <p>Lis Fasil Hafizh on the street:</p>
-      <button>Tambah</button>        
+      <a type="button" class="btn btn-success" href="view_addFasil.php">Tambah</a>
+      
       <table class="table table-hover">
         <thead>
           <tr>
@@ -85,18 +85,61 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
             <td>{{fasil.nomorWA2}}</td>
             <td>{{fasil.status}}</td>
             <td>
-              <button>Ubah</button>
-              <button>Hapus</button>
+              <a type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal" @click="getFasilSelected(fasil)">Ubah</a>
+
+              <!-- Modal -->
+              <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Ubah Data Fasil</h4>
+                    </div>
+                    <div class="modal-body">
+                      <!-- {{fasilSelected}} -->
+                      <form>
+                        <div class="form-group">
+                          <label for="nama">Nama:</label>
+                          <input id="nama" type="text" class="form-control" v-model="fasilSelected.nama">
+                        </div>
+                        <div class="form-group">
+                          <label for="wa">Nomor WA :</label>
+                          <input id="wa" type="text" class="form-control" v-model="fasilSelected.nomorWA">
+                        </div>
+                        <div class="form-group">
+                          <label for="wa2">Nomor WA 2 (optional) :</label>
+                          <input id="wa2" type="text" class="form-control" v-model="fasilSelected.nomorWA2">
+                        </div>
+                        <div class="form-group">
+                          <label for="st">Status</label>
+                          <select class="form-control" v-model="fasilSelected.status">
+                            <option value="1">aktif</option>
+                            <option value="0">pasif</option>
+                          </select>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-success" @click="ubahFasil()"  data-dismiss="modal">save</button>
+                      <button type="button" class="btn btn-info" data-dismiss="modal">cancel</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
+    <!-- TAB GRUP -->
     <div id="menu2" class="tab-pane fade">
       <h2>Grup</h2>
       <p>Lis Grup Hafizh on the street:</p>
-      <button>Tambah</button>          
+      <a type="button" class="btn btn-success" href="#">Tambah</a>
       <table class="table table-hover">
         <thead>
           <tr>
@@ -120,18 +163,13 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
             <td>{{grup.reviewer}}</td>
             <td>{{grup.reviewer2}}</td>
             <td>
-              <button>Ubah</button>
-              <button>Hapus</button>
+              <a type="button" class="btn btn-warning" href="#">Ubah</a>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- <div id="menu3" class="tab-pane fade">
-      <h3>Surah</h3>
-      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-    </div> -->
   </div>
 </div>
 
@@ -140,9 +178,12 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
 </footer>
 
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script> -->
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script> -->
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script> -->
+<script type="text/javascript" src="/hots/sweetalert.js"></script>
+<script type="text/javascript" src="/hots/axios.js"></script>
+<script type="text/javascript" src="/hots/vue.js"></script>
 <script type="text/javascript" src="controller_hotspusat.js"></script>
 
 </body>

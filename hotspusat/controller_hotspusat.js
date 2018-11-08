@@ -1,4 +1,4 @@
-// var url = "http://hots.kauny.com/hotspusat/model_hotspusat.php?action="
+// var url = "https://kauny.com/hots/hotspusat/model_hotspusat.php?action="
 var url = "http://localhost:8080/hots/hotspusat/model_hotspusat.php?action="
 
 var app = new Vue({
@@ -7,18 +7,12 @@ var app = new Vue({
   data: {
     arrFasil: [],
     arrGrup: [],
-    // newReport: {
-    //   id_admin: '',
-    //   id_grup: '',
-    //   memberAktiv: '',
-    //   memberPasif: '',
-    //   statusGrup: ''
-    // },
-    // arrStatus: [
-    //   {val: 'J', tag: 'Jalan'},
-    //   {val: 'P', tag: 'Pasif'},
-    //   {val: 'M', tag: 'Merger'}
-    // ]
+    newFasil: {
+      nama: "",
+      nomorWA: "",
+      nomorWA2: "",
+    },
+    fasilSelected: {}
   },
 
   mounted: function(){
@@ -39,53 +33,37 @@ var app = new Vue({
     },
 
     getGrup: function(){
-      // let formData = new FormData()
-      // formData.append('id_admin', this.newReport.id_admin)
-
-      axios.post(url+"readGrup")
-       .then(response => {
-         this.arrGrup = response.data.groups
+      axios.get(url+"readGrup")
+       .then(function(response){
+         app.arrGrup = response.data.groups
         //  console.log('>>>>>>>>>>>>>')
        })
-       .catch(error => {
+       .catch(function(error){
         //  console.log('============',error)
        })
     },
 
     validasiForm: function () {
-      if (this.newReport.id_admin === '') {
+      let cekWA = this.newFasil.nomorWA.match(/[^0-9]/g)
+      if (this.newFasil.nama === '') {
         swal({
           icon: 'error',
           title: 'Oops',
-          text: 'Admin wajib diisi'
+          text: 'nama wajib diisi'
         })
         return false
-      } else if (this.newReport.id_grup === '') {
+      } else if (this.newFasil.nomorWA.length < 10) {
         swal({
           icon: 'error',
           title: 'Oops',
-          text: 'Grup wajib diisi'
+          text: 'isian nomor Whatsapp minimal 10 digit'
         })
         return false
-      } else if (this.newReport.memberAktiv === '') {
+      } else if (cekWA) {
         swal({
           icon: 'error',
           title: 'Oops',
-          text: 'Member Aktif wajib diisi'
-        })
-        return false
-      } else if (this.newReport.memberPasif === '') {
-        swal({
-          icon: 'error',
-          title: 'Oops',
-          text: 'Member Pasif wajib diisi'
-        })
-        return false
-      } else if (this.newReport.statusGrup === '') {
-        swal({
-          icon: 'error',
-          title: 'Oops',
-          text: 'Status Grup wajib diisi'
+          text: 'isian nomor Whatsapp tidak boleh selain angka'
         })
         return false
       } else {
@@ -101,14 +79,14 @@ var app = new Vue({
       return form_data;
     },
 
-    saveLaporan: function(){
+    simpanFasil: function(){
       let cek = this.validasiForm()
       if(cek){
-        var formData = this.toFormdata(this.newReport)
-        axios.post(url+"simpanLaporan", formData)
+        var formData = this.toFormdata(this.newFasil)
+        axios.post(url+"simpanFasil", formData)
           .then(function(response){
-            swal('Laporan Grup Hots', 'Laporan berhasil diinput', 'success')
-            // console.log(response)
+            swal('Fasil', 'Data Fasil berhasil diinput', 'success')
+            // console.log(">>>>>>>>>>>>>",response)
           })
           .catch(function(error){
             swall({
@@ -116,8 +94,30 @@ var app = new Vue({
               title: 'Oops...',
               text: 'input failed...'
             })
+            // console.log("=============",error)
           })
       }
+    },
+
+    getFasilSelected: function(objFasil){
+      this.fasilSelected = objFasil
+    },
+
+    ubahFasil: function(){
+      var formData = this.toFormdata(this.fasilSelected)
+      // console.log('>>>>>>>>>>>>>>>',formData)
+      axios.post(url+"ubahFasil", formData)
+        .then(function(response){
+          swal('Fasil', 'Data Fasil Berhasil diperbaharui', 'success')
+          // console.log(response)
+        })
+        .catch(function(error){
+          swall({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Proses update gagal...'
+          })
+        })
     }
 
 

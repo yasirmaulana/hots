@@ -1,5 +1,5 @@
 <?php
-
+// include_once '../../hots/koneksi.inc';
 include_once '../../hots/koneksi.inc';
 
 $action = 'read';
@@ -33,26 +33,45 @@ if($action == 'readGrup'){
   $res['groups'] = $groups;
 }
 
-// MENYIMPAN DATA LAPORAN
-if($action == 'simpanLaporan'){
+// MENYIMPAN DATA FASIL
+if($action == 'simpanFasil'){
 
-  $id_admin = $_POST['id_admin'];
-  $id_grup = $_POST['id_grup'];
-  $memberAktiv = $_POST['memberAktiv'];
-  $memberPasif = $_POST['memberPasif'];
-  $statusGrup = $_POST['statusGrup'];
+  $nama = $_POST['nama'];
+  $nomorWA = $_POST['nomorWA'];
+  $nomorWA2 = $_POST['nomorWA2'];
 
-  $result = $conn->query("INSERT INTO hots_laporan_group(id_admin, id_grup, memberAktiv, memberPasif, statusGrup) VALUES ('$id_admin', '$id_grup', '$memberAktiv', '$memberPasif', '$statusGrup')");
+  $result = $conn->query("INSERT INTO hots_fasil(nama, nomorWA, nomorWA2) VALUES ('$nama', '$nomorWA', '$nomorWA2')");
 
-  $cek = "INSERT INTO hots_laporan_group(id_grup, memberAktiv, memberPasif, statusGrup) VALUES ('$id_admin', '$id_grup', '$memberAktiv', '$memberPasif', '$statusGrup')";
+  $cek = "INSERT INTO hots_fasil(nama, nomorWA, nomorWA2) VALUES ('$nama', '$nomorWA', '$nomorWA2')";
 
   if($result){
-    $res['message'] = "laporan berhasil tersimpan";
+    $res['message'] = "data fasil berhasil tersimpan";
   } else {
     $res['error'] = $cek;
   }
 
   $res['persons'] = $result;
+
+}
+
+// UPDATE DATA FASIL
+if($action == 'ubahFasil'){
+
+  $id = $_POST['id'];
+  $nama = $_POST['nama'];
+  $nomorWA1 = $_POST['nomorWA'];
+  $nomorWA2 = $_POST['nomorWA2'];
+  $status = $_POST['status'];
+
+  $result = $conn->query("UPDATE hots_fasil set nama = '$nama', nomorWA = '$nomorWA1', nomorWA2 = '$nomorWA2', status = $status WHERE id = $id");
+
+  // $cek = "UPDATE hots_fasil set nama = `$nama`, nomorWA = `$nomorWA1`, nomorWA2 = `$nomorWA2`, status = `$status` WHERE id = `$id`";
+
+  if($result){
+    // $res['message'] = "data fasil berhasil tersimpan";
+  } else {
+    // $res['error'] = $cek;
+  }
 
 }
 
