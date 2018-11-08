@@ -122,8 +122,8 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-success" @click="ubahFasil()"  data-dismiss="modal">save</button>
-                      <button type="button" class="btn btn-info" data-dismiss="modal">cancel</button>
+                      <button type="submit" class="btn btn-success" @click="ubahFasil()"  data-dismiss="modal">Simpan</button>
+                      <button type="button" class="btn btn-info" data-dismiss="modal">Batal</button>
                     </div>
                   </div>
 
@@ -139,7 +139,8 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
     <div id="menu2" class="tab-pane fade">
       <h2>Grup</h2>
       <p>Lis Grup Hafizh on the street:</p>
-      <a type="button" class="btn btn-success" href="#">Tambah</a>
+      <a type="button" class="btn btn-success" href="view_addGrup.php">Tambah</a>
+
       <table class="table table-hover">
         <thead>
           <tr>
@@ -147,23 +148,65 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
             <th>Surah</th>
             <th>Fasil</th>
             <th>Admin</th>
-            <th>Admin2</th>
+            <!-- <th>Admin2</th> -->
             <th>Reviewer</th>
-            <th>Reviewer2</th>
+            <!-- <th>Reviewer2</th> -->
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="grup in arrGrup">
-            <td>{{grup.id}}</td>
+            <td>{{grup.nomor_grup}}</td>
             <td>{{grup.surah}}</td>
             <td>{{grup.fasil}}</td>
             <td>{{grup.admin}}</td>
-            <td>{{grup.admin2}}</td>
+            <!-- <td>{{grup.admin2}}</td> -->
             <td>{{grup.reviewer}}</td>
-            <td>{{grup.reviewer2}}</td>
+            <!-- <td>{{grup.reviewer2}}</td> -->
             <td>
-              <a type="button" class="btn btn-warning" href="#">Ubah</a>
+              <a type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" @click="getGrupSelected(grup)">Ubah</a>
+
+              <!-- Modal -->
+              <div class="modal fade" id="myModal2" role="dialog">
+                <div class="modal-dialog">
+
+                  <!-- Modal content-->
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h4 class="modal-title">Ubah Data Grup</h4>
+                    </div>
+                    <div class="modal-body">
+                      {{grupSelected}}
+                      <!-- {{arrSurah}} -->
+                      <form>
+                        <div class="form-group">
+                          <label for="nomorGrup">Nomor Grup:</label>
+                          <input id="nomorGrup" type="text" class="form-control" v-model="grupSelected.nomor_grup">
+                        </div>
+                        <div class="form-group">
+                          <label for="surah">Surah:</label>
+                          <!-- <input id="surah" type="text" class="form-control" v-model="grupSelected.surah"> -->
+                          <select class="form-control" v-model="newGrup.idSurah">
+                            <!-- <option value="" disabled selected><-- Pilih Surah --></option> -->
+                            <option v-for="surah in this.arrSurah" :value="surah.id">{{surah.surah}}</option>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="fasil">Fasil:</label>
+                          <input id="fasil" type="text" class="form-control" v-model="grupSelected.fasil">
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-success" @click="ubahFasil()"  data-dismiss="modal">Simpan</button>
+                      <button type="button" class="btn btn-info" data-dismiss="modal">Batal</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
             </td>
           </tr>
         </tbody>

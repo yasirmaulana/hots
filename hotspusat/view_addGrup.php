@@ -6,7 +6,7 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Tambah Fasil</title>
+  <title>Tambah Grup</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="https://kauny.com/hots/images/hots.ico"/>
@@ -47,26 +47,33 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
 </nav>
 
 <div class="container" style="margin-top:50px;margin-bottom:50px">
-  <h2>Formulir Tambah Data Fasil</h2>
+  <h2>Formulir Tambah Data Grup</h2>
   <form>
     <div class="form-group">
-      <label for="nama">Nama*:</label>
-      <input type="nama" class="form-control" id="nama" v-model="newFasil.nama">
+      <label for="nomorGrup">Nomor Grup*:</label>
+      <input type="nomorGrup" class="form-control" id="nomorGrup" v-model="newGrup.nomorGrup">
     </div>
     <div class="form-group">
-      <label for="nomorWA">Nomor WA*:</label>
-      <input type="nomorWA" class="form-control" id="nomorWA" v-model="newFasil.nomorWA" placeholder="example: 0815xxxxxxxx">
+      <label for="surah">Surah*:</label>
+      <select class="form-control" v-model="newGrup.idSurah">
+        <option value="" disabled selected><-- Pilih Surah --></option>
+        <option v-for="surah in this.arrSurah" :value="surah.id">{{surah.surah}}</option>
+      </select>
     </div>
     <div class="form-group">
-      <label for="nomorWA2">Nomor WA2:</label>
-      <input type="nomorWA2" class="form-control" id="nomorWA2" v-model="newFasil.nomorWA2" placeholder="example: 0815xxxxxxxx">
+      <label for="fasil">Fasil*: {{newGrup.idFasil}}</label>
+      <select class="form-control" v-model="newGrup.idFasil">
+        <option value="" disabled selected><-- Pilih Fasil --></option>
+        <option v-for="fasil in this.arrFasil" :value="fasil.id">{{fasil.nama}}</option>
+      </select>
     </div>
-    <p style="color:red">Wajib diisi</p>
+    <p style="color:red">* Wajib diisi</p>
     <div>
-      <a type="submit" class="btn btn-success" @click="simpanFasil()">Simpan</a>
+      <a type="submit" class="btn btn-success" @click="simpanGrup()">Simpan</a>
       <a type="button" class="btn btn-info" href="view_hotspusat.php">kembali ke Dashboard</a>
     </div>
   </form>
+
 </div>
 
 <footer class="container-fluid text-center">

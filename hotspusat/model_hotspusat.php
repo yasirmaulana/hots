@@ -33,6 +33,19 @@ if($action == 'readGrup'){
   $res['groups'] = $groups;
 }
 
+// MENAMPILKAN DATA SURAH
+if($action == 'readSurah'){
+
+  $result = $conn->query("SELECT * FROM hots_surah");
+  $surah = array();
+
+  while($row = $result->fetch_assoc()){
+    array_push($surah, $row);
+  }
+
+  $res['surah'] = $surah;
+}
+
 // MENYIMPAN DATA FASIL
 if($action == 'simpanFasil'){
 
@@ -74,6 +87,28 @@ if($action == 'ubahFasil'){
   }
 
 }
+
+// MENYIMPAN DATA GRUP
+if($action == 'simpanGrup'){
+
+  $nomor_grup = $_POST['nomorGrup'];
+  $id_surah = $_POST['idSurah'];
+  $id_fasil = $_POST['idFasil'];
+
+  $result = $conn->query("INSERT INTO hots_grup(nomor_grup, id_surah, id_fasil) VALUES ('$nomor_grup', '$id_surah', '$id_fasil')");
+
+  $cek = "INSERT INTO hots_grup(nomor_grup, id_surah, id_fasil) VALUES ('$nomor_grup', '$id_surah', '$id_fasil')";
+
+  if($result){
+    $res['message'] = "data fasil berhasil tersimpan";
+  } else {
+    $res['error'] = $cek;
+  }
+
+  $res['persons'] = $result;
+
+}
+
 
 $conn->close();
 

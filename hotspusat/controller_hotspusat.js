@@ -7,17 +7,25 @@ var app = new Vue({
   data: {
     arrFasil: [],
     arrGrup: [],
+    arrSurah: [],
     newFasil: {
       nama: "",
       nomorWA: "",
       nomorWA2: "",
     },
-    fasilSelected: {}
+    fasilSelected: {},
+    newGrup: {
+      nomorGrup: "",
+      idSurah: "",
+      idFasil: ""
+    },
+    grupSelected: {}
   },
 
   mounted: function(){
     this.getFasil()
     this.getGrup()
+    this.getSurah()
   },
 
   methods: {
@@ -36,6 +44,17 @@ var app = new Vue({
       axios.get(url+"readGrup")
        .then(function(response){
          app.arrGrup = response.data.groups
+        //  console.log('>>>>>>>>>>>>>')
+       })
+       .catch(function(error){
+        //  console.log('============',error)
+       })
+    },
+
+    getSurah: function(){
+      axios.get(url+"readSurah")
+       .then(function(response){
+         app.arrSurah = response.data.surah
         //  console.log('>>>>>>>>>>>>>')
        })
        .catch(function(error){
@@ -118,9 +137,59 @@ var app = new Vue({
             text: 'Proses update gagal...'
           })
         })
-    }
+    },
 
+    validasiFormGrup: function () {
+      if (this.newGrup.nomorGrup === '') {
+        swal({
+          icon: 'error',
+          title: 'Oops',
+          text: 'Nomor Grup wajib diisi'
+        })
+        return false
+      } else if (this.newGrup.idSurah === '') {
+        swal({
+          icon: 'error',
+          title: 'Oops',
+          text: 'Surah wajib diisi'
+        })
+        return false
+      } else if (this.newGrup.idFasil === '') {
+        swal({
+          icon: 'error',
+          title: 'Oops',
+          text: 'Fasil wajib diisi'
+        })
+        return false
+      } else {
+        return true
+      }
+    },
 
+    simpanGrup: function(){
+      let cek = this.validasiFormGrup()
+      if(cek){
+        // swal('test dulu coy.....')
+        var formData = this.toFormdata(this.newGrup)
+        axios.post(url+"simpanGrup", formData)
+          .then(function(response){
+            swal('Grup', 'Data Grup berhasil diinput', 'success')
+            // console.log(">>>>>>>>>>>>>",response)
+          })
+          .catch(function(error){
+            swall({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'input failed...'
+            })
+            // console.log("=============",error)
+          })
+      }
+    },
+
+    getGrupSelected: function(objGrup){
+      this.grupSelected = objGrup
+    },
   }
 
 })
