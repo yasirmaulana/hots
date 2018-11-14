@@ -38,30 +38,40 @@ var app = new Vue({
        .catch(function(error){
         //  console.log('============',error)
        })
-    },
-
-    getGrup: function(){
-      axios.get(url+"readGrup")
-       .then(function(response){
-         app.arrGrup = response.data.groups
+      },
+      getGrup: function(){
+        axios.get(url+"readGrup")
+        .then(function(response){
+          app.arrGrup = response.data.groups
+          //  console.log('>>>>>>>>>>>>>')
+        })
+        .catch(function(error){
+          //  console.log('============',error)
+        })
+      },
+      getSurah: function(){
+        axios.get(url+"readSurah")
+        .then(function(response){
+          app.arrSurah = response.data.surah
         //  console.log('>>>>>>>>>>>>>')
-       })
-       .catch(function(error){
+      })
+      .catch(function(error){
         //  console.log('============',error)
-       })
+      })
     },
-
-    getSurah: function(){
-      axios.get(url+"readSurah")
-       .then(function(response){
-         app.arrSurah = response.data.surah
-        //  console.log('>>>>>>>>>>>>>')
-       })
-       .catch(function(error){
-        //  console.log('============',error)
-       })
+    getFasilSelected: function(objFasil){
+      this.fasilSelected = objFasil
     },
-
+    getGrupSelected: function(objGrup){
+      this.grupSelected = objGrup
+    },
+    toFormdata: function(obj){
+      var form_data = new FormData()
+      for(var key in obj){
+        form_data.append(key, obj[key])
+      }
+      return form_data;
+    },
     validasiForm: function () {
       let cekWA = this.newFasil.nomorWA.match(/[^0-9]/g)
       if (this.newFasil.nama === '') {
@@ -89,15 +99,6 @@ var app = new Vue({
         return true
       }
     },
-
-    toFormdata: function(obj){
-      var form_data = new FormData()
-      for(var key in obj){
-        form_data.append(key, obj[key])
-      }
-      return form_data;
-    },
-
     simpanFasil: function(){
       let cek = this.validasiForm()
       if(cek){
@@ -117,11 +118,6 @@ var app = new Vue({
           })
       }
     },
-
-    getFasilSelected: function(objFasil){
-      this.fasilSelected = objFasil
-    },
-
     ubahFasil: function(){
       var formData = this.toFormdata(this.fasilSelected)
       // console.log('>>>>>>>>>>>>>>>',formData)
@@ -138,7 +134,6 @@ var app = new Vue({
           })
         })
     },
-
     validasiFormGrup: function () {
       if (this.newGrup.nomorGrup === '') {
         swal({
@@ -165,7 +160,6 @@ var app = new Vue({
         return true
       }
     },
-
     simpanGrup: function(){
       let cek = this.validasiFormGrup()
       if(cek){
@@ -186,10 +180,21 @@ var app = new Vue({
           })
       }
     },
-
-    getGrupSelected: function(objGrup){
-      this.grupSelected = objGrup
-    },
+    ubahGrup: function(){
+      var formData = this.toFormdata(this.grupSelected)
+      axios.post(url+"ubahGrup", formData)
+      .then(function(response){
+        swal('Grup', 'Data Grup Berhasil diperbaharui', 'success')
+        // console.log(response)
+      })
+      .catch(function(error){
+        swall({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Proses update gagal...'
+        })
+      })
+    }
   }
 
 })

@@ -149,19 +149,19 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
             <th>Fasil</th>
             <th>Admin</th>
             <!-- <th>Admin2</th> -->
-            <th>Reviewer</th>
+            <!-- <th>Reviewer</th> -->
             <!-- <th>Reviewer2</th> -->
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody> 
           <tr v-for="grup in arrGrup">
             <td>{{grup.nomor_grup}}</td>
             <td>{{grup.surah}}</td>
             <td>{{grup.fasil}}</td>
             <td>{{grup.admin}}</td>
             <!-- <td>{{grup.admin2}}</td> -->
-            <td>{{grup.reviewer}}</td>
+            <!-- <td>{{grup.reviewer}}</td> -->
             <!-- <td>{{grup.reviewer2}}</td> -->
             <td>
               <a type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal2" @click="getGrupSelected(grup)">Ubah</a>
@@ -177,29 +177,27 @@ if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
                       <h4 class="modal-title">Ubah Data Grup</h4>
                     </div>
                     <div class="modal-body">
-                      {{grupSelected}}
-                      <!-- {{arrSurah}} -->
                       <form>
                         <div class="form-group">
                           <label for="nomorGrup">Nomor Grup:</label>
-                          <input id="nomorGrup" type="text" class="form-control" v-model="grupSelected.nomor_grup">
+                          <input id="nomorGrup" type="text" class="form-control" v-model="grupSelected.nomor_grup" disabled>
                         </div>
                         <div class="form-group">
                           <label for="surah">Surah:</label>
-                          <!-- <input id="surah" type="text" class="form-control" v-model="grupSelected.surah"> -->
-                          <select class="form-control" v-model="newGrup.idSurah">
-                            <!-- <option value="" disabled selected><-- Pilih Surah --></option> -->
-                            <option v-for="surah in this.arrSurah" :value="surah.id">{{surah.surah}}</option>
+                          <select class="form-control" v-model="grupSelected.id_surah">
+                            <option v-for="surah in arrSurah" :value="surah.id">{{surah.surah}}</option>
                           </select>
                         </div>
                         <div class="form-group">
                           <label for="fasil">Fasil:</label>
-                          <input id="fasil" type="text" class="form-control" v-model="grupSelected.fasil">
+                          <select class="form-control" v-model="grupSelected.id_fasil">
+                            <option v-for="fasil in arrFasil" :value="fasil.id">{{fasil.nama}}</option>
+                          </select>
                         </div>
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-success" @click="ubahFasil()"  data-dismiss="modal">Simpan</button>
+                      <button type="submit" class="btn btn-success" @click="ubahGrup()"  data-dismiss="modal">Simpan</button>
                       <button type="button" class="btn btn-info" data-dismiss="modal">Batal</button>
                     </div>
                   </div>

@@ -1,117 +1,143 @@
 <?php
-// include_once '../../hots/koneksi.inc';
-include_once '../../hots/koneksi.inc';
 
-$action = 'read';
+session_start();
+if(isset($_SESSION['nomorWA']) && $_SESSION['role']=='pusat'){
 
-if(isset($_GET['action'])){
-  $action = $_GET['action'];
-}
+  include_once '../../hots/koneksi.inc';
 
-// MENAMPILKAN DATA FASIL
-if($action == 'readFasil'){
-  $result = $conn->query("SELECT * FROM `hots_fasil`");
-  $fasils = array();
+  $action = 'read';
 
-  while($row = $result->fetch_assoc()){
-    array_push($fasils, $row);
+  if(isset($_GET['action'])){
+    $action = $_GET['action'];
   }
 
-  $res['fasils'] = $fasils;
-}
+  // MENAMPILKAN DATA FASIL
+  if($action == 'readFasil'){
+    $result = $conn->query("SELECT * FROM `hots_fasil`");
+    $fasils = array();
 
-// MENAMPILKAN DATA GRUP
-if($action == 'readGrup'){
+    while($row = $result->fetch_assoc()){
+      array_push($fasils, $row);
+    }
 
-  $result = $conn->query("SELECT * FROM view_hots_grup");
-  $groups = array();
-
-  while($row = $result->fetch_assoc()){
-    array_push($groups, $row);
+    $res['fasils'] = $fasils;
   }
 
-  $res['groups'] = $groups;
-}
+  // MENAMPILKAN DATA GRUP
+  if($action == 'readGrup'){
 
-// MENAMPILKAN DATA SURAH
-if($action == 'readSurah'){
+    $result = $conn->query("SELECT * FROM view_hots_grup order by id_fasil");
+    $groups = array();
 
-  $result = $conn->query("SELECT * FROM hots_surah");
-  $surah = array();
+    while($row = $result->fetch_assoc()){
+      array_push($groups, $row);
+    }
 
-  while($row = $result->fetch_assoc()){
-    array_push($surah, $row);
+    $res['groups'] = $groups;
   }
 
-  $res['surah'] = $surah;
-}
+  // MENAMPILKAN DATA SURAH
+  if($action == 'readSurah'){
 
-// MENYIMPAN DATA FASIL
-if($action == 'simpanFasil'){
+    $result = $conn->query("SELECT * FROM hots_surah");
+    $surah = array();
 
-  $nama = $_POST['nama'];
-  $nomorWA = $_POST['nomorWA'];
-  $nomorWA2 = $_POST['nomorWA2'];
+    while($row = $result->fetch_assoc()){
+      array_push($surah, $row);
+    }
 
-  $result = $conn->query("INSERT INTO hots_fasil(nama, nomorWA, nomorWA2) VALUES ('$nama', '$nomorWA', '$nomorWA2')");
-
-  $cek = "INSERT INTO hots_fasil(nama, nomorWA, nomorWA2) VALUES ('$nama', '$nomorWA', '$nomorWA2')";
-
-  if($result){
-    $res['message'] = "data fasil berhasil tersimpan";
-  } else {
-    $res['error'] = $cek;
+    $res['surah'] = $surah;
   }
 
-  $res['persons'] = $result;
+  // MENYIMPAN DATA FASIL
+  if($action == 'simpanFasil'){
 
-}
+    $nama = $_POST['nama'];
+    $nomorWA = $_POST['nomorWA'];
+    $nomorWA2 = $_POST['nomorWA2'];
 
-// UPDATE DATA FASIL
-if($action == 'ubahFasil'){
+    $result = $conn->query("INSERT INTO hots_fasil(nama, nomorWA, nomorWA2) VALUES ('$nama', '$nomorWA', '$nomorWA2')");
 
-  $id = $_POST['id'];
-  $nama = $_POST['nama'];
-  $nomorWA1 = $_POST['nomorWA'];
-  $nomorWA2 = $_POST['nomorWA2'];
-  $status = $_POST['status'];
+    $cek = "INSERT INTO hots_fasil(nama, nomorWA, nomorWA2) VALUES ('$nama', '$nomorWA', '$nomorWA2')";
 
-  $result = $conn->query("UPDATE hots_fasil set nama = '$nama', nomorWA = '$nomorWA1', nomorWA2 = '$nomorWA2', status = $status WHERE id = $id");
+    if($result){
+      $res['message'] = "data fasil berhasil tersimpan";
+    } else {
+      $res['error'] = $cek;
+    }
 
-  // $cek = "UPDATE hots_fasil set nama = `$nama`, nomorWA = `$nomorWA1`, nomorWA2 = `$nomorWA2`, status = `$status` WHERE id = `$id`";
+    $res['persons'] = $result;
 
-  if($result){
-    // $res['message'] = "data fasil berhasil tersimpan";
-  } else {
-    // $res['error'] = $cek;
   }
 
-}
+  // UPDATE DATA FASIL
+  if($action == 'ubahFasil'){
 
-// MENYIMPAN DATA GRUP
-if($action == 'simpanGrup'){
+    $id = $_POST['id'];
+    $nama = $_POST['nama'];
+    $nomorWA1 = $_POST['nomorWA'];
+    $nomorWA2 = $_POST['nomorWA2'];
+    $status = $_POST['status'];
 
-  $nomor_grup = $_POST['nomorGrup'];
-  $id_surah = $_POST['idSurah'];
-  $id_fasil = $_POST['idFasil'];
+    $result = $conn->query("UPDATE hots_fasil set nama = '$nama', nomorWA = '$nomorWA1', nomorWA2 = '$nomorWA2', status = $status WHERE id = $id");
 
-  $result = $conn->query("INSERT INTO hots_grup(nomor_grup, id_surah, id_fasil) VALUES ('$nomor_grup', '$id_surah', '$id_fasil')");
+    // $cek = "UPDATE hots_fasil set nama = `$nama`, nomorWA = `$nomorWA1`, nomorWA2 = `$nomorWA2`, status = `$status` WHERE id = `$id`";
 
-  $cek = "INSERT INTO hots_grup(nomor_grup, id_surah, id_fasil) VALUES ('$nomor_grup', '$id_surah', '$id_fasil')";
+    if($result){
+      // $res['message'] = "data fasil berhasil tersimpan";
+    } else {
+      // $res['error'] = $cek;
+    }
 
-  if($result){
-    $res['message'] = "data fasil berhasil tersimpan";
-  } else {
-    $res['error'] = $cek;
   }
 
-  $res['persons'] = $result;
+  // MENYIMPAN DATA GRUP
+  if($action == 'simpanGrup'){
+
+    $nomor_grup = $_POST['nomorGrup'];
+    $id_surah = $_POST['idSurah'];
+    $id_fasil = $_POST['idFasil'];
+
+    $result = $conn->query("INSERT INTO hots_grup(nomor_grup, id_surah, id_fasil) VALUES ('$nomor_grup', '$id_surah', '$id_fasil')");
+
+    $cek = "INSERT INTO hots_grup(nomor_grup, id_surah, id_fasil) VALUES ('$nomor_grup', '$id_surah', '$id_fasil')";
+
+    if($result){
+      $res['message'] = "data fasil berhasil tersimpan";
+    } else {
+      $res['error'] = $cek;
+    }
+
+    $res['persons'] = $result;
+
+  }
+
+
+  // UPDATE DATA FASIL
+  if($action == 'ubahGrup'){
+
+    $nomor_grup = $_POST['nomor_grup'];
+    $id_surah = $_POST['id_surah'];
+    $id_fasil = $_POST['id_fasil'];
+    // $nomorWA2 = $_POST['nomorWA2'];
+    // $status = $_POST['status'];
+
+    $result = $conn->query("UPDATE hots_grup set id_surah = '$id_surah', id_surah = '$id_surah', WHERE nomor_grup = $nomor_grup");
+
+    // $cek = "UPDATE hots_grup set id_surah = '$id_surah', id_surah = '$id_surah', WHERE nomor_grup = $nomor_grup";
+
+    if($result){
+      // $res['message'] = "data fasil berhasil tersimpan";
+    } else {
+      // $res['error'] = $cek;
+    }
+
+  }
+
+  $conn->close();
+
+  header("Content-type: application/json");
+  echo json_encode($res);
+  die();
 
 }
-
-
-$conn->close();
-
-header("Content-type: application/json");
-echo json_encode($res);
-die();

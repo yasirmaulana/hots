@@ -28,7 +28,7 @@ if( ! empty($data)){
         header("location: ./hotspusat/view_hotspusat.php");
         break;
     case "fasil":
-        header("location: ./hotsfasil/index.php");
+        header("location: ./hotsfasil/view_hotsfasil.php");
         break;
     case "admin":
         header("location: ./hotsadmin/index.php");
