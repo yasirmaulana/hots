@@ -16,6 +16,13 @@ if(isset($_SESSION['username'])){ // Jika session username ada berarti dia sudah
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  footer {
+    background-color: #555;
+    color: white;
+    padding: 10px;
+  }
+  </style>
 </head>
 <body>
 
@@ -46,7 +53,8 @@ if(isset($_COOKIE["message"])){ // Jika ada
   </div>
 </nav>
 
-<div class="container" style="margin-top:70px">
+<div class="container" style="margin-top:50px">
+  <h2>Hots LogIn</h2>
   <form method="post" action="login.php">
     <div class="form-group">
       <label for="username">No HP (WA):</label>
@@ -59,6 +67,10 @@ if(isset($_COOKIE["message"])){ // Jika ada
     <button type="submit" class="btn btn-default">Login</button>
   </form>
 </div>
+
+<footer class="container-fluid text-center">
+  <p>IT Dept. @ 2018</p>
+</footer>
 
 </body>
 </html>
