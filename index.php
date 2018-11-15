@@ -79,7 +79,7 @@
   </div>
         
   <footer class="container-fluid text-center">
-    <p>Footer Text</p>
+    <p>IT Dept. @ 2018</p>
   </footer>
 
 </div>
